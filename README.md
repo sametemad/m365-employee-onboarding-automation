@@ -81,7 +81,7 @@ The workflow is triggered automatically when a new employee onboarding request i
 
 The approver receives a structured approval request containing the employee onboarding information required to make a decision.
 
-![Microsoft Approvals Request](assets/approval-request.png)
+![Microsoft Approvals Onboarding Request](assets/approval-request.png)
 
 The approver can:
 
@@ -120,7 +120,7 @@ When the approver selects `Reject`:
 
 After the approval decision is processed, Power Automate updates the original SharePoint record automatically.
 
-![SharePoint Approval Results](assets/sharepoint-approval-results.png)
+![SharePoint Approval Results and Audit Trail](assets/sharepoint-approval-results.png)
 
 The workflow maintains structured audit metadata for each request.
 
@@ -241,121 +241,19 @@ Detailed technical documentation is available in the `docs` directory:
 
 ## Project Structure
 
-    m365-employee-onboarding-automation/
-    │
-    ├── README.md
-    │
-    ├── assets/
-    │   ├── architecture.png
-    │   ├── workflow-overview.png
-    │   ├── approval-request.png
-    │   └── sharepoint-approval-results.png
-    │
-    └── docs/
-        ├── architecture.md
-        ├── sharepoint-schema.md
-        ├── workflow.md
-        └── testing.md
-
----
-
-## Security and Privacy
-
-This repository contains sanitized project documentation intended for technical demonstration and portfolio purposes.
-
-The public repository intentionally excludes:
-
-- Production credentials
-- Passwords
-- Access tokens
-- Tenant IDs
-- Internal SharePoint URLs
-- Organizational email addresses
-- Confidential employee information
-- Production employee records
-- Sensitive Microsoft 365 configuration details
-
-Workflow authentication remains within Microsoft 365 services and is not stored in this repository.
-
----
-
-## Future Enhancements
-
-### Power Apps Front End
-
-A Power Apps interface can provide a dedicated user experience for submitting and tracking employee lifecycle requests.
-
-### Employee Offboarding
-
-The lifecycle solution can be extended to support:
-
-- Offboarding requests
-- Last working date tracking
-- Microsoft 365 account disablement tasks
-- Session and access revocation
-- Group and application access removal
-- Equipment return tracking
-- Access card and key recovery
-- Offboarding completion verification
-
-### IT Provisioning
-
-Approved onboarding requests can automatically generate downstream IT provisioning tasks such as:
-
-- Laptop preparation
-- Account provisioning
-- Microsoft 365 access
-- Security group assignment
-- Equipment assignment
-- Access card provisioning
-
-### Additional Enhancements
-
-- Multi-stage approvals
-- Role-based request views
-- Microsoft Teams notifications
-- Onboarding task tracking
-- Equipment lifecycle management
-- Reporting and analytics
-- Power BI dashboard integration
-
----
-
-## Roadmap
-
-**Phase 1 — Onboarding Approval & Audit Trail**  
-Completed
-
-**Phase 2 — Employee Offboarding Automation**  
-Planned
-
-**Phase 3 — Power Apps Lifecycle Interface**  
-Planned
-
-**Phase 4 — IT Provisioning & Equipment Tracking**  
-Planned
-
-**Phase 5 — Reporting & Lifecycle Dashboard**  
-Planned
-
----
-
-## Project Status
-
-**Core Workflow:** Completed  
-**Approved Path:** Validated  
-**Rejected Path:** Validated  
-**Audit Tracking:** Validated  
-**Mobile Approval:** Validated  
-**Technical Documentation:** Completed  
-**Visual Documentation:** Completed  
-
-**Overall Status: Phase 1 Completed and Portfolio Ready**
-
----
-
-## Author
-
-**Sam Etemad**
-
-IT Infrastructure & Cloud Security Specialist
+```text
+m365-employee-onboarding-automation/
+│
+├── README.md
+│
+├── assets/
+│   ├── architecture.png
+│   ├── workflow-overview.png
+│   ├── approval-request.png
+│   └── sharepoint-approval-results.png
+│
+└── docs/
+    ├── architecture.md
+    ├── sharepoint-schema.md
+    ├── workflow.md
+    └── testing.md
