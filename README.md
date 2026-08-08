@@ -1,33 +1,30 @@
 # Microsoft 365 Employee Onboarding Automation
 
-A Microsoft 365 employee onboarding workflow built with SharePoint Online, Power Automate, and Microsoft Approvals.
+An end-to-end Microsoft 365 employee onboarding approval solution built with SharePoint Online, Power Automate, and Microsoft Approvals.
 
-The solution automates employee onboarding approval requests, captures approval decisions, and maintains structured audit information directly in SharePoint.
+The solution automates onboarding requests from submission through approval, decision processing, SharePoint updates, and approval audit tracking.
+
+---
 
 ## Overview
 
-This project demonstrates an end-to-end Microsoft 365 business process automation solution.
+This project demonstrates a practical Microsoft 365 business process automation solution.
 
-A SharePoint Online list acts as the primary data store for employee onboarding requests. When a new request is created, Power Automate automatically initiates an approval workflow.
+A SharePoint Online list acts as the primary data layer for employee onboarding requests. When a new request is submitted, Power Automate automatically initiates an approval workflow.
 
-The approver can approve or reject the request through Microsoft Approvals. The workflow then updates the corresponding SharePoint record with the approval status and audit metadata.
+The approver can approve or reject the request through Microsoft Approvals. Power Automate then processes the decision and updates the original SharePoint record with the final status and approval metadata.
 
-## Technologies
-
-- Microsoft 365
-- SharePoint Online
-- Power Automate
-- Microsoft Approvals
-- Microsoft Entra ID
-- Microsoft 365 mobile approval experience
+---
 
 ## Architecture
 
-The solution follows this workflow:
+![Microsoft 365 Employee Onboarding Architecture](assets/architecture.png)
+
+### Workflow
 
 SharePoint Online  
 ↓  
-Employee Lifecycle Request Created  
+Employee Onboarding Request  
 ↓  
 Power Automate Trigger  
 ↓  
@@ -35,18 +32,32 @@ Microsoft Approvals
 ↓  
 Approval Decision  
 ↓  
-Condition  
-↙              ↘  
-Approved     Rejected  
-↓              ↓  
-Update SharePoint Record  
+Approve / Reject  
 ↓  
-Store Audit Metadata
+SharePoint Record Update  
+↓  
+Audit Metadata
+
+---
+
+## Technologies
+
+- Microsoft 365
+- SharePoint Online
+- Microsoft Lists
+- Power Automate
+- Microsoft Approvals
+- Microsoft Entra ID
+
+---
 
 ## SharePoint Data Model
 
-The `Employee Lifecycle Requests` list stores onboarding information including:
+The `Employee Lifecycle Requests` list stores structured onboarding information.
 
+### Request Data
+
+- Title
 - Request Type
 - Employee Name
 - Department
@@ -56,75 +67,134 @@ The `Employee Lifecycle Requests` list stores onboarding information including:
 - Employment Type
 - Location
 - Equipment Required
+
+### Workflow Data
+
 - Status
 - Approver
 - Approval Date
 - Approval Comments
 
-Approval-related fields are controlled by the automation rather than the standard user request form.
+The workflow-controlled fields are separated from the standard request-entry experience so they are managed by automation rather than manually entered by users.
+
+---
 
 ## Power Automate Workflow
 
-The automated workflow performs the following operations:
+The automation performs the following sequence:
 
-1. Detects a new SharePoint onboarding request.
-2. Retrieves the employee onboarding information.
-3. Creates an approval request using Microsoft Approvals.
-4. Waits for the approver's decision.
-5. Evaluates the approval outcome.
-6. Executes the appropriate Approved or Rejected branch.
-7. Updates the original SharePoint record.
-8. Records approval audit information.
+1. Detects creation of a new SharePoint onboarding request.
+2. Retrieves the onboarding request data.
+3. Creates an approval request through Microsoft Approvals.
+4. Sends the request to the designated approver.
+5. Waits for the approval decision.
+6. Evaluates the returned outcome.
+7. Routes processing through the Approved or Rejected branch.
+8. Updates the original SharePoint record.
+9. Stores approval metadata for audit purposes.
 
-## Approval Audit Trail
+---
 
-The workflow automatically maintains:
+## Approval Logic
 
-- Approval Status
-- Approver Identity
-- Approval Date
-- Approval Comments
+### Approved
 
-This provides a structured audit trail for each onboarding request.
+When the approver selects `Approve`:
 
-## Testing
+- Status is changed to `Approved`
+- Approver identity is recorded
+- Approval date is captured
+- Approval comments are stored when provided
 
-The solution was validated through multiple end-to-end tests.
+### Rejected
 
-### Approved Scenario
+When the approver selects `Reject`:
 
-Verified:
+- Status is changed to `Rejected`
+- Approver identity is recorded
+- Approval date is captured
+- Rejection comments are stored
+
+---
+
+## Audit Trail
+
+Each processed request can maintain the following workflow-generated metadata:
+
+| Field | Purpose |
+|---|---|
+| Status | Current approval state |
+| Approver | Identity of the person who responded |
+| Approval Date | Date of the approval decision |
+| Approval Comments | Comments submitted with the decision |
+
+This creates a structured approval history directly within the SharePoint record.
+
+---
+
+## Testing and Validation
+
+The solution was validated using multiple end-to-end onboarding requests.
+
+### Approved Path
+
+Validated successfully:
 
 - SharePoint trigger execution
-- Approval request generation
-- Approval processing
+- Approval request creation
+- Approval response processing
+- Conditional Approved branch
 - Status update to `Approved`
 - Approver identity capture
 - Approval date capture
 - Approval comments capture
 
-### Rejected Scenario
+**Result:** Passed
 
-Verified:
+### Rejected Path
+
+Validated successfully:
 
 - SharePoint trigger execution
-- Rejection processing
+- Approval request creation
+- Rejection response processing
+- Conditional Rejected branch
 - Status update to `Rejected`
 - Approver identity capture
 - Approval date capture
 - Rejection comments capture
 
+**Result:** Passed
+
 ### Additional Validation
 
-The following were also tested:
+Also verified:
 
 - Required SharePoint fields remain intact after workflow updates
-- Person or Group field mapping for the approver
-- Conditional workflow branches
-- Power Automate run history
+- Approver is stored using a Person or Group field
+- Both conditional branches execute correctly
+- Power Automate run history completes successfully
+- Approval processing works from mobile
+- Workflow-managed fields can be hidden from the standard request form
+- Renaming the Approver display name does not break workflow processing
+
+---
+
+## Key Features
+
+- Automated employee onboarding requests
+- SharePoint-based request management
+- Microsoft Approvals integration
+- Approve and Reject decision branches
+- Automatic SharePoint updates
+- Approver identity tracking
+- Approval date capture
+- Approval comment capture
+- Structured audit trail
 - Mobile approval processing
-- Workflow-controlled audit fields
-- SharePoint column display-name changes
+- End-to-end workflow validation
+
+---
 
 ## Documentation
 
@@ -135,11 +205,16 @@ Detailed technical documentation is available in the `docs` directory:
 - [Power Automate Workflow](docs/workflow.md)
 - [Testing and Validation](docs/testing.md)
 
+---
+
 ## Project Structure
 
     m365-employee-onboarding-automation/
     │
     ├── README.md
+    │
+    ├── assets/
+    │   └── architecture.png
     │
     └── docs/
         ├── architecture.md
@@ -147,49 +222,57 @@ Detailed technical documentation is available in the `docs` directory:
         ├── workflow.md
         └── testing.md
 
-## Key Features
+---
 
-- Automated employee onboarding workflow
-- SharePoint-based request management
-- Microsoft Approvals integration
-- Approve and Reject workflow branches
-- Automated SharePoint record updates
-- Approver identity tracking
-- Approval date tracking
-- Approval comments capture
-- Structured audit trail
-- Mobile approval support
-- End-to-end workflow validation
+## Security and Privacy
 
-## Security and Design Considerations
+This repository contains sanitized project documentation intended for portfolio and technical demonstration purposes.
 
-Workflow-managed approval fields are separated from user-entered onboarding information.
+The repository intentionally excludes:
 
-Approval metadata is hidden from the standard SharePoint request form to reduce the risk of manual modification.
+- Production credentials
+- Passwords
+- Access tokens
+- Tenant IDs
+- Internal SharePoint URLs
+- Confidential organizational data
+- Real employee records
+- Sensitive Microsoft 365 configuration details
 
-The solution uses Microsoft 365 identity and permission controls rather than storing credentials or sensitive authentication information in the repository.
+Workflow authentication remains within Microsoft 365 services and is not stored in this repository.
 
-No production credentials, tenant secrets, access tokens, or confidential employee information are included in this repository.
+---
 
 ## Future Enhancements
 
-Potential future development includes:
+Planned extensions include:
 
-- Power Apps onboarding interface
-- Role-based request views
-- Multi-stage approvals
-- Automated IT provisioning tasks
-- Equipment assignment workflows
+- Power Apps onboarding front end
+- Employee request dashboard
+- Role-based views
+- Multi-stage approval workflows
+- Equipment provisioning automation
 - Microsoft Teams notifications
-- Onboarding completion tracking
-- Reporting and dashboard integration
-- Employee offboarding automation
+- Onboarding task tracking
+- Employee offboarding workflow
+- Reporting and analytics
+
+A future Power Apps interface can use the existing SharePoint and Power Automate solution as its backend without rebuilding the core approval workflow.
+
+---
 
 ## Project Status
 
-**Status:** Completed and Validated
+**Core Workflow:** Completed  
+**Approved Path:** Validated  
+**Rejected Path:** Validated  
+**Audit Tracking:** Validated  
+**Mobile Approval:** Validated  
+**Documentation:** Completed  
 
-The core SharePoint and Power Automate employee onboarding approval workflow has been successfully implemented and tested.
+**Overall Status: Completed and Portfolio Ready**
+
+---
 
 ## Author
 
